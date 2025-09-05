@@ -5,7 +5,7 @@ import { Button, Card, CardContent, CardHeader, CardTitle } from '@/components/u
 // @ts-ignore;
 import { ShoppingCart, Plus, Minus, Trash2 } from 'lucide-react';
 
-// 修正组件导入路径
+// 修正组件导入路径 - 使用相对路径
 import { CouponSelector } from './CouponSelector';
 export function CartSheet({
   isOpen,
@@ -103,7 +103,7 @@ export function CartSheet({
                 </div>
               </div>
               <Button className="w-full h-12 bg-gradient-to-r from-orange-500 to-purple-500 hover:from-orange-600 hover:to-purple-600 text-white font-semibold" onClick={handleCheckout}>
-                去结算 ({cartItemCount}件)
+                去结算 ({cart.reduce((sum, item) => sum + item.quantity, 0)}件)
               </Button>
             </div>}
         </div>

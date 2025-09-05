@@ -5,7 +5,7 @@ import { Button, Card, CardContent, CardHeader, CardTitle, Input, useToast } fro
 // @ts-ignore;
 import { QrCode, Utensils, Sparkles, Ticket } from 'lucide-react';
 
-// 修正组件导入路径
+// 修正组件导入路径 - 使用相对路径
 import { CouponCenter } from '../components/CouponCenter';
 export default function IndexPage(props) {
   const {

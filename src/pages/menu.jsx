@@ -5,7 +5,7 @@ import { Button, Card, CardHeader, CardTitle, Input, useToast } from '@/componen
 // @ts-ignore;
 import { ShoppingCart, Search, Flame, Utensils, Soup, GlassWater, Wheat, ChevronLeft, Ticket } from 'lucide-react';
 
-// 修正组件导入路径
+// 修正组件导入路径 - 使用相对路径
 import { PromotionCarousel } from '../components/PromotionCarousel';
 import { DishCard } from '../components/DishCard';
 import { CartSheet } from '../components/CartSheet';
