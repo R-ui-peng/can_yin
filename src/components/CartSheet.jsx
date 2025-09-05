@@ -1,12 +1,73 @@
 // @ts-ignore;
 import React, { useState } from 'react';
 // @ts-ignore;
-import { Button, Card, CardContent, CardHeader, CardTitle } from '@/components/ui';
+import { Button, Card, CardContent, CardHeader, CardTitle, RadioGroup, RadioGroupItem, Label } from '@/components/ui';
 // @ts-ignore;
-import { ShoppingCart, Plus, Minus, Trash2 } from 'lucide-react';
+import { ShoppingCart, Plus, Minus, Trash2, Ticket, X } from 'lucide-react';
 
-// 修正组件导入路径 - 使用相对路径
-import { CouponSelector } from './CouponSelector';
+// 将CouponSelector功能内联到CartSheet中，避免组件加载错误
+function CouponSelector({
+  coupons,
+  selectedCoupon,
+  onSelect,
+  totalAmount
+}) {
+  const [showSelector, setShowSelector] = useState(false);
+  const applicableCoupons = coupons.filter(coupon => totalAmount >= coupon.minSpend);
+  const getDiscountAmount = coupon => {
+    if (!coupon) return 0;
+    if (coupon.type === '满减券') {
+      return coupon.discount;
+    } else if (coupon.type === '折扣券') {
+      return totalAmount * (1 - coupon.discount / 10);
+    }
+    return 0;
+  };
+  return <div className="border-t pt-4 mt-4">
+      <div className="flex items-center justify-between mb-3">
+        <h4 className="font-semibold text-gray-800">优惠券</h4>
+        <Button variant="ghost" size="sm" onClick={() => setShowSelector(!showSelector)}>
+          {showSelector ? <X className="h-4 w-4" /> : '选择'}
+        </Button>
+      </div>
+
+      {showSelector && <div className="space-y-3">
+          <RadioGroup value={selectedCoupon?.id || ''} onValueChange={value => {
+        const coupon = coupons.find(c => c.id === value);
+        onSelect(coupon);
+      }}>
+            <div className="space-y-2">
+              <div className="flex items-center space-x-3 p-3 rounded-lg border-2 border-gray-200 hover:border-orange-300 transition-colors">
+                <RadioGroupItem value="" id="no-coupon" />
+                <Label htmlFor="no-coupon" className="cursor-pointer">不使用优惠券</Label>
+              </div>
+              {applicableCoupons.map(coupon => <div key={coupon.id} className="flex items-center space-x-3 p-3 rounded-lg border-2 border-gray-200 hover:border-orange-300 transition-colors">
+                  <RadioGroupItem value={coupon.id} id={coupon.id} />
+                  <Label htmlFor={coupon.id} className="cursor-pointer flex-1">
+                    <div className="font-medium">
+                      {coupon.title}
+                    </div>
+                    <div className="text-sm text-gray-600">
+                      {coupon.type === '满减券' ? `满${coupon.minSpend}减${coupon.discount}` : `${coupon.discount}折`}
+                    </div>
+                  </Label>
+                  <div className="text-sm font-bold text-orange-500">
+                    -¥{getDiscountAmount(coupon).toFixed(2)}
+                  </div>
+                </div>)}
+            </div>
+          </RadioGroup>
+        </div>}
+
+      {selectedCoupon && <div className="flex items-center justify-between p-3 bg-orange-50 rounded-lg mt-2">
+          <div className="flex items-center space-x-2">
+            <Ticket className="h-4 w-4 text-orange-500" />
+            <span className="font-medium">{selectedCoupon.title}</span>
+          </div>
+          <span className="font-bold text-orange-500">-¥{getDiscountAmount(selectedCoupon).toFixed(2)}</span>
+        </div>}
+    </div>;
+}
 export function CartSheet({
   isOpen,
   onClose,
@@ -83,7 +144,7 @@ export function CartSheet({
                   </Card>)}
               </div>}
 
-            {/* 优惠券选择区域 */}
+            {/* 优惠券选择区域 - 内联实现 */}
             {cart.length > 0 && <CouponSelector coupons={coupons} selectedCoupon={selectedCoupon} onSelect={onSelectCoupon} totalAmount={total} />}
           </div>
 
