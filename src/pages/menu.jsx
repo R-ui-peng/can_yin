@@ -311,21 +311,19 @@ export default function MenuPage(props) {
             </div>
           </div>
 
-          {cartItemCount > 0 && <div className="fixed bottom-4 left-4 right-4 z-50">
-              <Button className="w-full bg-orange-500 hover:bg-orange-600 text-white py-6 rounded-full shadow-lg" onClick={() => setIsCartOpen(true)}>
-                <div className="flex items-center justify-between w-full">
-                  <span className="flex items-center">
-                    <ShoppingCart className="h-5 w-5 mr-2" />
-                    查看购物车
-                  </span>
-                  <div className="flex items-center space-x-3">
-                    <Badge variant="secondary" className="bg-orange-600 text-white">
-                      {cartItemCount}件
-                    </Badge>
-                    <span className="text-lg font-semibold">¥{cartTotal}</span>
-                  </div>
+          {/* 左侧圆形购物车浮窗 */}
+          {cartItemCount > 0 && <div className="fixed left-4 bottom-20 z-50">
+              <button onClick={() => setIsCartOpen(true)} className="relative group">
+                <div className="w-14 h-14 bg-orange-500 rounded-full flex items-center justify-center shadow-lg hover:shadow-xl transition-all hover:scale-110">
+                  <ShoppingCart className="h-6 w-6 text-white" />
                 </div>
-              </Button>
+                <div className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full w-6 h-6 flex items-center justify-center font-bold">
+                  {cartItemCount}
+                </div>
+                <div className="absolute left-full ml-3 top-1/2 -translate-y-1/2 bg-gray-800 text-white text-sm px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
+                  ¥{cartTotal}
+                </div>
+              </button>
             </div>}
 
           <CartSheet isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} cart={cart} onUpdateQuantity={updateQuantity} tableNumber={tableNumber} total={cartTotal} $w={$w} />
