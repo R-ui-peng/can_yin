@@ -17,32 +17,25 @@ function CartSheet({
   const {
     toast
   } = useToast();
-  const handleSubmitOrder = async () => {
-    try {
-      // 模拟提交订单
-      const orderId = Date.now().toString();
+  const handleCheckout = () => {
+    if (cart.length === 0) {
       toast({
-        title: "订单提交成功",
-        description: `订单号：${orderId}`
-      });
-      setTimeout(() => {
-        $w.utils.navigateTo({
-          pageId: 'order',
-          params: {
-            orderId,
-            tableNumber,
-            items: JSON.stringify(cart),
-            total
-          }
-        });
-      }, 1000);
-    } catch (error) {
-      toast({
-        title: "订单提交失败",
-        description: "请重试或联系服务员",
+        title: "购物车为空",
+        description: "请先添加商品到购物车",
         variant: "destructive"
       });
+      return;
     }
+
+    // 跳转到支付页面
+    $w.utils.navigateTo({
+      pageId: 'payment',
+      params: {
+        tableNumber,
+        items: JSON.stringify(cart),
+        total: total.toString()
+      }
+    });
   };
   if (!isOpen) return null;
   return <div className="fixed inset-0 bg-black/50 z-50" onClick={onClose}>
@@ -88,8 +81,8 @@ function CartSheet({
                   <span className="text-lg font-semibold">总计</span>
                   <span className="text-2xl font-bold text-orange-500">¥{total}</span>
                 </div>
-                <Button className="w-full bg-orange-500 hover:bg-orange-600" size="lg" onClick={handleSubmitOrder}>
-                  提交订单
+                <Button className="w-full bg-orange-500 hover:bg-orange-600" size="lg" onClick={handleCheckout}>
+                  去结算
                 </Button>
               </div>}
           </div>

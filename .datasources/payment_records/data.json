@@ -1,0 +1,97 @@
+
+[
+  {
+    "_id": "pay_2024052001",
+    "order_id": "ORD2024052001",
+    "amount": 68.5,
+    "payment_method": "wechat",
+    "payment_status": "paid",
+    "payment_time": 1716182400000,
+    "transaction_no": "WX2024052001",
+    "table_number": "5",
+    "items": [
+      {
+        "id": 1,
+        "name": "宫保鸡丁",
+        "price": 28,
+        "quantity": 1,
+        "image": "https://images.unsplash.com/photo-1525755662778-989d0524087e?w=400"
+      },
+      {
+        "id": 2,
+        "name": "麻婆豆腐",
+        "price": 18,
+        "quantity": 1,
+        "image": "https://images.unsplash.com/photo-1582252852999-5b1740c95b5b?w=400"
+      },
+      {
+        "id": 6,
+        "name": "可乐",
+        "price": 5,
+        "quantity": 2,
+        "image": "https://images.unsplash.com/photo-1581636625402-29b2a704ef13?w=400"
+      }
+    ],
+    "createdAt": 1716182300000,
+    "updatedAt": 1716182400000,
+    "owner": "user_001",
+    "createBy": "user_001",
+    "updateBy": "user_001"
+  },
+  {
+    "_id": "pay_2024052002",
+    "order_id": "ORD2024052002",
+    "amount": 45,
+    "payment_method": "alipay",
+    "payment_status": "pending",
+    "payment_time": null,
+    "transaction_no": null,
+    "table_number": "3",
+    "items": [
+      {
+        "id": 3,
+        "name": "糖醋里脊",
+        "price": 32,
+        "quantity": 1,
+        "image": "https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?w=400"
+      },
+      {
+        "id": 5,
+        "name": "紫菜蛋花汤",
+        "price": 12,
+        "quantity": 1,
+        "image": "https://images.unsplash.com/photo-1547592166-23ac45744acd?w=400"
+      }
+    ],
+    "createdAt": 1716182500000,
+    "updatedAt": 1716182500000,
+    "owner": "user_002",
+    "createBy": "user_002",
+    "updateBy": "user_002"
+  },
+  {
+    "_id": "pay_2024052003",
+    "order_id": "ORD2024052003",
+    "amount": 32,
+    "payment_method": "balance",
+    "payment_status": "cancelled",
+    "payment_time": null,
+    "transaction_no": null,
+    "table_number": "8",
+    "items": [
+      {
+        "id": 4,
+        "name": "番茄鸡蛋面",
+        "price": 16,
+        "quantity": 2,
+        "image": "https://images.unsplash.com/photo-1569718212165-3a8278d5f624?w=400"
+      }
+    ],
+    "createdAt": 1716182000000,
+    "updatedAt": 1716182200000,
+    "owner": "user_003",
+    "createBy": "user_003",
+    "updateBy": "user_003"
+  }
+]
+  

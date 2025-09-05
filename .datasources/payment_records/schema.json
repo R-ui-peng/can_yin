@@ -1,0 +1,52 @@
+
+{
+  "name": "payment_records",
+  "title": "支付记录",
+  "schemas": [
+    {
+      "name": "order_id",
+      "title": "订单ID",
+      "type": "String"
+    },
+    {
+      "name": "amount",
+      "title": "支付金额",
+      "type": "Number"
+    },
+    {
+      "name": "payment_method",
+      "title": "支付方式",
+      "type": "String"
+    },
+    {
+      "name": "payment_status",
+      "title": "支付状态",
+      "type": "String"
+    },
+    {
+      "name": "payment_time",
+      "title": "支付时间",
+      "type": "DateTime",
+      "format": "timestamp-ms"
+    },
+    {
+      "name": "transaction_no",
+      "title": "交易号",
+      "type": "String"
+    },
+    {
+      "name": "table_number",
+      "title": "桌号",
+      "type": "String"
+    },
+    {
+      "name": "items",
+      "title": "商品列表",
+      "type": "Array",
+      "items": {
+        "type": "Object"
+      }
+    }
+  ]
+}
+  

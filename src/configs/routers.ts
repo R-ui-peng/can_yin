@@ -1,6 +1,7 @@
 import INDEX from '../pages/index.jsx';
 import MENU from '../pages/menu.jsx';
 import ORDER from '../pages/order.jsx';
+import PAYMENT from '../pages/payment.jsx';
 export const routers = [{
   id: "index",
   component: INDEX
@@ -10,4 +11,7 @@ export const routers = [{
 }, {
   id: "order",
   component: ORDER
+}, {
+  id: "payment",
+  component: PAYMENT
 }]
