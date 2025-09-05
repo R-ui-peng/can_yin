@@ -145,8 +145,8 @@ export default function MenuPage(props) {
         <div className="max-w-4xl mx-auto px-4 py-4">
           <div className="flex items-center justify-between">
             <div>
-              <h1 className="text-2xl font-bold bg-gradient-to-r from-orange-600 to-purple-600 bg-clip-text text-transparent">
-                美味餐厅
+              <h1 className="text-2xl font-bold text-black">
+                齐和聚
               </h1>
               <p className="text-sm text-gray-600 flex items-center">
                 <span className="inline-block w-2 h-2 bg-green-500 rounded-full mr-2"></span>
