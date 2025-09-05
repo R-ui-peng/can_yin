@@ -123,7 +123,7 @@ export default function PaymentPage(props) {
             </div>
           </header>
 
-          <div className="max-w-4xl mx-auto px-4 py-6">
+          <div className="max-w-4xl mx-auto px-4 py-6 pb-32">
             {/* 订单摘要 */}
             <Card className="mb-4">
               <CardHeader>
@@ -173,18 +173,18 @@ export default function PaymentPage(props) {
                 </RadioGroup>
               </CardContent>
             </Card>
+          </div>
 
-            {/* 支付按钮 */}
-            <div className="fixed bottom-0 left-0 right-0 bg-white border-t p-4">
-              <div className="max-w-4xl mx-auto">
-                <div className="flex items-center justify-between mb-3">
-                  <span className="text-lg font-semibold">需支付</span>
-                  <span className="text-2xl font-bold text-orange-500">¥{total.toFixed(2)}</span>
-                </div>
-                <Button className="w-full bg-orange-500 hover:bg-orange-600" size="lg" onClick={handlePayment} disabled={isProcessing}>
-                  {isProcessing ? '处理中...' : '立即支付'}
-                </Button>
+          {/* 支付按钮 */}
+          <div className="fixed bottom-0 left-0 right-0 bg-white border-t p-4">
+            <div className="max-w-4xl mx-auto">
+              <div className="flex items-center justify-between mb-3">
+                <span className="text-lg font-semibold">需支付</span>
+                <span className="text-2xl font-bold text-orange-500">¥{total.toFixed(2)}</span>
               </div>
+              <Button className="w-full bg-orange-500 hover:bg-orange-600" size="lg" onClick={handlePayment} disabled={isProcessing}>
+                {isProcessing ? '处理中...' : '立即支付'}
+              </Button>
             </div>
           </div>
         </div>;
