@@ -1,9 +1,9 @@
 // @ts-ignore;
 import React, { useState, useEffect } from 'react';
 // @ts-ignore;
-import { Button, Card, CardContent, CardHeader, CardTitle, Badge, Input, Tabs, TabsContent, TabsList, TabsTrigger, useToast } from '@/components/ui';
+import { Button, Card, CardContent, CardHeader, CardTitle, Badge, Input, useToast } from '@/components/ui';
 // @ts-ignore;
-import { ShoppingCart, Search, Plus, Minus, Clock, Flame, Utensils } from 'lucide-react';
+import { ShoppingCart, Search, Plus, Minus, Clock, Flame, Utensils, Soup, GlassWater, Wheat } from 'lucide-react';
 
 import CartSheet from '@/components/CartSheet';
 function DishCard({
@@ -39,28 +39,34 @@ export default function MenuPage(props) {
   } = useToast();
   const [categories, setCategories] = useState([{
     id: 'hot',
-    name: '热销',
-    icon: Flame
+    name: '热销推荐',
+    icon: Flame,
+    color: 'text-red-500'
   }, {
     id: 'staple',
-    name: '主食',
-    icon: Utensils
+    name: '精品主食',
+    icon: Wheat,
+    color: 'text-amber-600'
   }, {
     id: 'meat',
-    name: '荤菜',
-    icon: Utensils
+    name: '特色荤菜',
+    icon: Utensils,
+    color: 'text-orange-600'
   }, {
     id: 'vegetable',
-    name: '素菜',
-    icon: Utensils
+    name: '清爽素菜',
+    icon: Utensils,
+    color: 'text-green-600'
   }, {
     id: 'soup',
-    name: '汤品',
-    icon: Utensils
+    name: '养生汤品',
+    icon: Soup,
+    color: 'text-blue-600'
   }, {
     id: 'drink',
-    name: '饮品',
-    icon: Utensils
+    name: '饮品小食',
+    icon: GlassWater,
+    color: 'text-purple-600'
   }]);
   const [dishes, setDishes] = useState([{
     id: 1,
@@ -172,39 +178,62 @@ export default function MenuPage(props) {
           </header>
 
           <div className="max-w-4xl mx-auto px-4 py-4">
-            <div className="relative mb-4">
-              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-4 w-4" />
-              <Input placeholder="搜索菜品..." value={searchTerm} onChange={e => setSearchTerm(e.target.value)} className="pl-10" />
+            <div className="relative mb-6">
+              <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
+              <Input placeholder="搜索菜品..." value={searchTerm} onChange={e => setSearchTerm(e.target.value)} className="pl-10 py-3 text-base" />
             </div>
 
-            <Tabs value={selectedCategory} onValueChange={setSelectedCategory}>
-              <TabsList className="grid grid-cols-3 lg:grid-cols-6 mb-4">
-                {categories.map(category => <TabsTrigger key={category.id} value={category.id} className="text-sm">
-                    {category.name}
-                  </TabsTrigger>)}
-              </TabsList>
-
-              <TabsContent value="hot">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {(searchTerm ? filteredDishes : hotDishes).map(dish => <DishCard key={dish.id} dish={dish} onAdd={addToCart} />)}
+            <div className="flex flex-col lg:flex-row gap-6">
+              {/* 左侧分类导航 */}
+              <div className="lg:w-64 flex-shrink-0">
+                <div className="bg-white rounded-lg shadow-sm p-4">
+                  <h3 className="font-semibold text-lg mb-4 text-gray-800">菜品分类</h3>
+                  <div className="space-y-2">
+                    {categories.map(category => {
+                const Icon = category.icon;
+                const isActive = selectedCategory === category.id;
+                return <button key={category.id} onClick={() => setSelectedCategory(category.id)} className={`w-full flex items-center space-x-3 p-3 rounded-lg transition-all ${isActive ? 'bg-orange-50 border-orange-200 border' : 'hover:bg-gray-50'}`}>
+                          <Icon className={`h-5 w-5 ${isActive ? category.color : 'text-gray-400'}`} />
+                          <span className={`font-medium ${isActive ? 'text-orange-600' : 'text-gray-700'}`}>
+                            {category.name}
+                          </span>
+                          {isActive && <div className="ml-auto w-1 h-4 bg-orange-500 rounded-full" />}
+                        </button>;
+              })}
+                  </div>
                 </div>
-              </TabsContent>
+              </div>
 
-              <TabsContent value={selectedCategory}>
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  {filteredDishes.map(dish => <DishCard key={dish.id} dish={dish} onAdd={addToCart} />)}
+              {/* 右侧菜品列表 */}
+              <div className="flex-1">
+                <div className="mb-4">
+                  <h2 className="text-xl font-bold text-gray-800 mb-2">
+                    {categories.find(c => c.id === selectedCategory)?.name || '热销推荐'}
+                  </h2>
+                  <p className="text-sm text-gray-600">
+                    {selectedCategory === 'hot' ? '本店最受欢迎的人气菜品' : `精选${categories.find(c => c.id === selectedCategory)?.name}`}
+                  </p>
                 </div>
-              </TabsContent>
-            </Tabs>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {(selectedCategory === 'hot' ? hotDishes : filteredDishes).map(dish => <DishCard key={dish.id} dish={dish} onAdd={addToCart} />)}
+                </div>
+              </div>
+            </div>
           </div>
 
           {cartItemCount > 0 && <div className="fixed bottom-4 left-4 right-4 z-50">
               <Button className="w-full bg-orange-500 hover:bg-orange-600 text-white py-6 rounded-full shadow-lg" onClick={() => setIsCartOpen(true)}>
                 <div className="flex items-center justify-between w-full">
-                  <span>查看购物车</span>
-                  <div className="flex items-center space-x-2">
-                    <span>{cartItemCount}件</span>
-                    <span>¥{cartTotal}</span>
+                  <span className="flex items-center">
+                    <ShoppingCart className="h-5 w-5 mr-2" />
+                    查看购物车
+                  </span>
+                  <div className="flex items-center space-x-3">
+                    <Badge variant="secondary" className="bg-orange-600 text-white">
+                      {cartItemCount}件
+                    </Badge>
+                    <span className="text-lg font-semibold">¥{cartTotal}</span>
                   </div>
                 </div>
               </Button>
