@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 // @ts-ignore;
 import { Button, Card, CardContent, CardHeader, CardTitle, Badge, Input, Tabs, TabsContent, TabsList, TabsTrigger, useToast } from '@/components/ui';
 // @ts-ignore;
-import { ShoppingCart, Search, Plus, Minus, Clock, Flame } from 'lucide-react';
+import { ShoppingCart, Search, Plus, Minus, Clock, Flame, Utensils } from 'lucide-react';
 
 import CartSheet from '@/components/CartSheet';
 function DishCard({
