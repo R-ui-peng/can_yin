@@ -1,18 +1,21 @@
 // @ts-ignore;
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 // @ts-ignore;
 import { Button, Card, CardHeader, CardTitle, Input, useToast } from '@/components/ui';
 // @ts-ignore;
-import { ShoppingCart, Search, Flame, Utensils, Soup, GlassWater, Wheat, ChevronLeft } from 'lucide-react';
+import { ShoppingCart, Search, Flame, Utensils, Soup, GlassWater, Wheat, ChevronLeft, Ticket } from 'lucide-react';
 
-import { PromotionCarousel } from '@/components/PromotionCarousel';
-import { DishCard } from '@/components/DishCard';
-import { CartSheet } from '@/components/CartSheet';
+// 修正组件导入路径
+import { PromotionCarousel } from '../components/PromotionCarousel';
+import { DishCard } from '../components/DishCard';
+import { CartSheet } from '../components/CartSheet';
+import { CouponTag } from '../components/CouponTag';
 export default function MenuPage(props) {
   const {
     $w
   } = props;
   const tableNumber = props.$w.page.dataset.params.table || 1;
+  const userCoupons = JSON.parse(props.$w.page.dataset.params.coupons || '[]');
   const {
     toast
   } = useToast();
@@ -100,6 +103,7 @@ export default function MenuPage(props) {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('hot');
   const [isCartOpen, setIsCartOpen] = useState(false);
+  const [selectedCoupon, setSelectedCoupon] = useState(null);
   const filteredDishes = dishes.filter(dish => {
     const matchesSearch = dish.name.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesCategory = selectedCategory === 'hot' ? true : dish.category === selectedCategory;
@@ -140,6 +144,11 @@ export default function MenuPage(props) {
   };
   const cartTotal = cart.reduce((sum, item) => sum + item.price * item.quantity, 0);
   const cartItemCount = cart.reduce((sum, item) => sum + item.quantity, 0);
+  const getApplicableCoupon = () => {
+    return userCoupons.find(coupon => cartTotal >= coupon.minSpend);
+  };
+  const applicableCoupon = getApplicableCoupon();
+  const finalAmount = selectedCoupon ? selectedCoupon.type === '满减券' ? cartTotal - selectedCoupon.discount : cartTotal * (selectedCoupon.discount / 10) : cartTotal;
   return <div className="min-h-screen bg-gradient-to-br from-gray-50 via-white to-orange-50">
       <header className="bg-white/80 backdrop-blur-md shadow-sm sticky top-0 z-40 border-b border-gray-100">
         <div className="max-w-4xl mx-auto px-4 py-4">
@@ -161,7 +170,22 @@ export default function MenuPage(props) {
       </header>
 
       <div className="max-w-4xl mx-auto px-4 py-6">
+        {/* 使用本地组件 */}
         <PromotionCarousel />
+
+        {/* 可用优惠券提示 */}
+        {applicableCoupon && <div className="mb-4 p-4 bg-gradient-to-r from-orange-50 to-purple-50 rounded-2xl border border-orange-200">
+            <div className="flex items-center justify-between">
+              <div className="flex items-center space-x-2">
+                <Ticket className="h-5 w-5 text-orange-500" />
+                <span className="font-medium text-gray-800">可用优惠券</span>
+                <CouponTag coupon={applicableCoupon} isApplicable={true} />
+              </div>
+              <span className="text-sm text-gray-600">
+                可省¥{applicableCoupon.type === '满减券' ? applicableCoupon.discount : (cartTotal * (1 - applicableCoupon.discount / 10)).toFixed(2)}
+              </span>
+            </div>
+          </div>}
 
         <div className="relative mb-6">
           <Search className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400 h-5 w-5" />
@@ -221,11 +245,11 @@ export default function MenuPage(props) {
               {cartItemCount}
             </div>
             <div className="absolute left-full ml-3 top-1/2 -translate-y-1/2 bg-gray-800 text-white text-sm px-2 py-1 rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap">
-              ¥{cartTotal}
+              ¥{finalAmount.toFixed(2)}
             </div>
           </button>
         </div>}
 
-      <CartSheet isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} cart={cart} onUpdateQuantity={updateQuantity} tableNumber={tableNumber} total={cartTotal} $w={$w} />
+      <CartSheet isOpen={isCartOpen} onClose={() => setIsCartOpen(false)} cart={cart} onUpdateQuantity={updateQuantity} tableNumber={tableNumber} total={cartTotal} finalAmount={finalAmount} coupons={userCoupons} selectedCoupon={selectedCoupon} onSelectCoupon={setSelectedCoupon} $w={$w} />
     </div>;
 }
